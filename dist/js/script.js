@@ -70,46 +70,71 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 // carousel
 function initializeCarousel(carouselId) {
   const carousel = document.querySelector(`#${carouselId}`);
+  if (!carousel) return; // Jika carousel tidak ditemukan, hentikan fungsi.
+
   const carouselInner = carousel.querySelector('.carousel-inner');
   const prevButton = carousel.querySelector('.carousel-control.prev');
   const nextButton = carousel.querySelector('.carousel-control.next');
   const items = carousel.querySelectorAll('.carousel-item');
-  const itemWidth = items[0].clientWidth;
-  let currentIndex = 0;
 
-  function moveToSlide(index) {
+  if (!carouselInner || !prevButton || !nextButton || items.length === 0) return;
+
+  let currentIndex = 0;
+  let itemWidth = items[0].clientWidth;
+
+  // Fungsi untuk memperbarui ukuran item saat layar berubah
+  function updateItemWidth() {
+    itemWidth = items[0].clientWidth;
+    moveToSlide(currentIndex, false); // Pastikan posisi tetap setelah resize
+  }
+
+  // Fungsi untuk memindahkan carousel ke slide tertentu
+  function moveToSlide(index, smooth = true) {
+    carouselInner.style.transition = smooth ? 'transform 0.5s ease-in-out' : 'none';
     carouselInner.style.transform = `translateX(-${index * itemWidth}px)`;
     currentIndex = index;
   }
 
+  // Event Listener untuk tombol prev
   prevButton.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      moveToSlide(currentIndex - 1);
-    } else {
-      moveToSlide(items.length - 1);
-    }
+    moveToSlide(currentIndex > 0 ? currentIndex - 1 : items.length - 1);
   });
 
+  // Event Listener untuk tombol next
   nextButton.addEventListener('click', () => {
-    if (currentIndex < items.length - 1) {
-      moveToSlide(currentIndex + 1);
-    } else {
-      moveToSlide(0);
-    }
+    moveToSlide(currentIndex < items.length - 1 ? currentIndex + 1 : 0);
   });
 
-  // Auto slide (optional)
-  setInterval(() => {
-    if (currentIndex === items.length - 1) {
-      moveToSlide(0);
-    } else {
-      moveToSlide(currentIndex + 1);
-    }
+  // Auto slide setiap 5 detik
+  let autoSlideInterval = setInterval(() => {
+    moveToSlide(currentIndex < items.length - 1 ? currentIndex + 1 : 0);
   }, 5000);
+
+  // Hentikan auto slide saat hover
+  carousel.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+  carousel.addEventListener('mouseleave', () => {
+    autoSlideInterval = setInterval(() => {
+      moveToSlide(currentIndex < items.length - 1 ? currentIndex + 1 : 0);
+    }, 5000);
+  });
+
+  // Menyesuaikan ukuran item saat jendela di-resize
+  window.addEventListener('resize', updateItemWidth);
+
+  // Inisialisasi pertama setelah sedikit delay untuk memastikan semua elemen ter-load
+  setTimeout(() => {
+    updateItemWidth();
+    moveToSlide(0, false);
+  }, 300);
 }
-initializeCarousel('carousel-1');
-initializeCarousel('carousel-2');
-initializeCarousel('carousel-5');
+
+// Pastikan carousel diinisialisasi setelah halaman sepenuhnya dimuat
+window.addEventListener('load', function () {
+  initializeCarousel('carousel-1');
+  initializeCarousel('carousel-2');
+  initializeCarousel('carousel-5');
+});
+
 
 document.addEventListener('DOMContentLoaded', init);
 function init() {
