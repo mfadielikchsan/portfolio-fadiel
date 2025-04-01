@@ -3,6 +3,8 @@
 //   window.scrollTo(0, 0);
 // }
 
+window.open("dist/doc/CV%20Muhamad%20Fadiel%20Ikchsan.pdf", "_blank");
+
 function toHome() {
   window.scrollTo(0, 0);
 }
