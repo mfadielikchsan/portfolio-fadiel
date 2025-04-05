@@ -134,7 +134,9 @@ function initializeCarousel(carouselId) {
 window.addEventListener('load', function () {
   initializeCarousel('carousel-1');
   initializeCarousel('carousel-2');
-  initializeCarousel('carousel-5');
+  initializeCarousel('carousel-3');
+  initializeCarousel('carousel-4');
+  initializeCarousel('carousel-10');
 });
 
 
