@@ -136,7 +136,11 @@ window.addEventListener('load', function () {
   initializeCarousel('carousel-2');
   initializeCarousel('carousel-3');
   initializeCarousel('carousel-4');
-  initializeCarousel('carousel-10');
+  initializeCarousel('carousel-5');
+  initializeCarousel('carousel-6');
+  initializeCarousel('carousel-7');
+  initializeCarousel('carousel-8');
+  initializeCarousel('carousel-9');
 });
 
 
