@@ -141,6 +141,7 @@ window.addEventListener('load', function () {
   initializeCarousel('carousel-7');
   initializeCarousel('carousel-8');
   initializeCarousel('carousel-9');
+  initializeCarousel('carousel-10');
 });
 
 
